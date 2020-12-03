@@ -4,17 +4,21 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {Articulos} from '../models';
 import {ArticulosRepository} from '../repositories';
@@ -22,8 +26,8 @@ import {ArticulosRepository} from '../repositories';
 export class ArticulosController {
   constructor(
     @repository(ArticulosRepository)
-    public articulosRepository : ArticulosRepository,
-  ) {}
+    public articulosRepository: ArticulosRepository,
+  ) { }
 
   @post('/articulos', {
     responses: {
@@ -170,4 +174,65 @@ export class ArticulosController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.articulosRepository.deleteById(id);
   }
+
+  @get('/articulos/vistaArticulos')
+  async vistaArticulos(): Promise<any> {
+    let datos: any[] = await this.getVista();
+    return datos;
+  }
+
+  async getVista() {
+    return await this.articulosRepository.dataSource.execute('SELECT * FROM vArticulos')
+  }
+
+  @get('/articulos/vistaDetalleFactura')
+  async vistaDetalleFactura(): Promise<any> {
+    let datos: any[] = await this.getDetFactura();
+    return datos;
+  }
+
+  async getDetFactura() {
+    return await this.articulosRepository.dataSource.execute('SELECT * FROM vFactura')
+  }
+
+  @get('/articulos/vistaCompraProveedores')
+  async vistaCompraProveedores(): Promise<any> {
+    let datos: any[] = await this.getCompraProveedores();
+    return datos;
+  }
+
+  async getCompraProveedores() {
+    return await this.articulosRepository.dataSource.execute('SELECT * FROM vCompraProveedor')
+  }
+
+  @get('/articulos/vistaPagosClientes')
+  async vistaPagosClientes(): Promise<any> {
+    let datos: any[] = await this.getPagosClientes();
+    return datos;
+  }
+
+  async getPagosClientes() {
+    return await this.articulosRepository.dataSource.execute('SELECT * FROM vRegistroPagos')
+  }
+
+  @get('/articulo/SP_Proveedores')
+  async sp_Proveedores(): Promise<any> {
+    let datos: any[] = await this.getSP();
+    return datos;
+  }
+
+  async getSP() {
+    return await this.articulosRepository.dataSource.execute('EXECUTE SP_Proveedores')
+  }
+
+  @get('/articulo/SP_Facturas')
+  async sp_Facturas(): Promise<any> {
+    let datos: any[] = await this.getSP_facturas();
+    return datos;
+  }
+
+  async getSP_facturas() {
+    return await this.articulosRepository.dataSource.execute('EXECUTE SP_Facturas')
+  }
+
 }

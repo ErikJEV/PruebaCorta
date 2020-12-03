@@ -4,17 +4,21 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
 import {Proveedor} from '../models';
 import {ProveedorRepository} from '../repositories';
@@ -22,8 +26,8 @@ import {ProveedorRepository} from '../repositories';
 export class ProveedorController {
   constructor(
     @repository(ProveedorRepository)
-    public proveedorRepository : ProveedorRepository,
-  ) {}
+    public proveedorRepository: ProveedorRepository,
+  ) { }
 
   @post('/proveedors', {
     responses: {
