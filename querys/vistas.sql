@@ -7,9 +7,27 @@ SELECT Articulos.id, Articulos.precioUnitario, Inventario.idProveedor FROM artic
 INNER JOIN Inventario on Articulos.id=Inventario.idArticulo
 GO
 
-CREATE PROCEDURE SP_Proveedores AS
-SELECT Inventario.idArticulo, Inventario.Cantidad, Proveedor.Nombre from Inventario
-INNER JOIN Proveedor on Inventario.idProveedor=proveedor.id
-ORDER BY Inventario.Cantidad DESC
+CREATE VIEW vFactura AS
+-- Select rows from a Table or View 'TableOrViewName' in schema 'SchemaName'
+SELECT Factura.Total, factura.Fecha, DetalleFactura.Monto FROM Factura
+INNER JOIN DetalleFactura on Factura.id=DetalleFactura.idFactura
+GO
 
-EXECUTE SP_Proveedores
+CREATE VIEW vRegistroPagos AS
+-- Select rows from a Table or View 'TableOrViewName' in schema 'SchemaName'
+SELECT Cliente.id, Cliente.nombre, PagosCliente.Cantidad, PagosCliente.Fecha FROM Cliente
+INNER JOIN RegistroPagos on Cliente.id=RegistroPagos.idCliente
+INNER JOIN PagosCliente on RegistroPagos.idPago=PagosCliente.id
+GO
+
+CREATE VIEW vCompraProveedor AS
+-- Select rows from a Table or View 'TableOrViewName' in schema 'SchemaName'
+SELECT Proveedor.id, Proveedor.Nombre, DetalleCompraProveedor.Cantidad, DetalleCompraProveedor.Monto FROM Proveedor
+INNER JOIN Inventario on Proveedor.id=Inventario.idProveedor
+INNER JOIN Articulos on Inventario.idArticulo=Articulos.id
+INNER JOIN DetalleCompraProveedor on Articulos.id=DetalleCompraProveedor.idArticulo
+GO
+
+
+
+
